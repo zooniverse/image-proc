@@ -1,5 +1,5 @@
 {
-  "name": "zoo-static-crop",
+  "name": "static_crop",
   "version": "0.0.1",
   "description": "Web server with NodeJS thats manipulates images from the zooniverse static",
   "author": "The Zooniverse",

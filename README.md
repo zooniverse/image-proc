@@ -1,4 +1,4 @@
-# zoo-static-crop
+# static_crop
 
 NodeJS web server thats crops and / or resizes images from the Zooniverse's static media server
 

@@ -16,7 +16,7 @@ RUN apt-get install -y supervisor
 
 RUN cd /node_app && npm install .
 
-COPY docker/supervisor.conf /etc/supervisor/conf.d/zoo-static-crop.conf
+COPY docker/supervisor.conf /etc/supervisor/conf.d/static_crop.conf
 
 EXPOSE 8080
 
