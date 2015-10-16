@@ -48,7 +48,7 @@ NODE_DEBUG || false
 ```
 
 ## Notes
-  - Does not delete the pictures in the /img directory, will need to clean these up manually.
+  - Uses docker (cron & tmpreaper) to clean up the media in the /img directory. See the docker/static_crop_cron tabfile for more details.
 
 ## Credits
 Inspired by the good work from Philmod, https://github.com/Philmod/node-resize-image-server
