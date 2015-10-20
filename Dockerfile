@@ -11,6 +11,8 @@ WORKDIR /node_app
 
 COPY . /node_app
 
+RUN mkdir -p /node_app/log
+
 RUN apt-get install -y supervisor
 
 RUN cd /node_app && npm install .
