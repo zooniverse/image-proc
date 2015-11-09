@@ -112,7 +112,8 @@ app.get('/crop', function(req, res, next){
  * Montage route. Takes multiple images and combines them into a pleasing grid/tile layout
  */
 app.get('/montage', function(req, res, next){
-	u = req.query.u;
+	// Get url(s)
+	var u = req.query.u;
 	if (!Array.isArray(u)) {
 		return next(new Error('Please specify at least two images'));
 	}
