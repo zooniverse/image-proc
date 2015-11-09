@@ -6,6 +6,9 @@ var express = require('express')
 	, Img = require('./lib/image.js')
 	, gm = require('gm')
 	, morgan = require('morgan')
+	, Montage = require('./lib/montage')
+	,	util = require('util')
+	,	async = require('async')
 	;
 
 /**
@@ -105,6 +108,27 @@ app.get('/crop', function(req, res, next){
 	});
 });
 
+/**
+ * Montage route. Takes multiple images and combines them into a pleasing grid/tile layout
+ */
+app.get('/montage', function(req, res, next){
+	u = req.query.u;
+	if (!Array.isArray(u)) {
+		return next(new Error('Please specify at least two images'));
+	}
+
+	// Load all source images
+	async.map(req.query.u, function (u, done) {
+		new Img(static_host + u,img_path).load(done);
+	}, function (err, images) {
+		if (err) next(new Error(err));
+		var montage = new Montage(images);
+		montage.construct(function (err, outfile) {
+			if (err) next(new Error(err));
+			res.sendFile(outfile);
+		});
+	});
+});
 
 /**
  * Start server.
