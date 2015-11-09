@@ -123,7 +123,7 @@ app.get('/montage', function(req, res, next){
 		new Img(static_host + u,img_path).load(done);
 	}, function (err, images) {
 		if (err) next(new Error(err));
-		var montage = new Montage(images);
+		var montage = new Montage(images, req.query.w);
 		montage.construct(function (err, outfile) {
 			if (err) next(new Error(err));
 			res.sendFile(outfile);
