@@ -29,7 +29,15 @@ Params are: w x h dimensions.
 + http://localhost:3000/resize_crop?w=500&h=600&u=panoptes-uploads.zooniverse.org/production/subject_location/90a3b642-55e2-4583-a4fb-2f0abeb5b285.jpeg
 
 ## Require
-Requires imagemagick CLI tools to be installed.
+Requires [GraphicsMagick](http://www.graphicsmagick.org/) **and** (for now) [ImageMagick](http://imagemagick.org/) CLI tools to be installed:
+
+Debian/Ubuntu:
+
+`apt-get install imagemagick graphicsmagick`
+
+OSX:
+
+`brew install imagemagick` or `port install ImageMagick`
 
 ## Install and run
 ```js
