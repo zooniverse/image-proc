@@ -31,7 +31,7 @@ Params are: w x h dimensions.
 ## /montage route
 Tile several images together to create a multi-image subject image. Requires at least two images
 
-Params are: w for tile width.
+Params are: w for tile width, mw for max desired width (for the final image)
 
 + http://localhost:3000/montage?u=panoptes-uploads.zooniverse.org/production/subject_location/90a3b642-55e2-4583-a4fb-2f0abeb5b285.jpeg&u=panoptes-uploads.zooniverse.org/production/subject_location/90a3b642-55e2-4583-a4fb-2f0abeb5b285.jpeg
 
