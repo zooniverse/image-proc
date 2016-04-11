@@ -33,6 +33,34 @@ var app = express()
 // server to find the images on
 var static_host = app.settings.static_server;
 
+// function cropImage(u, w, h, x, y, res, next){
+function cropImage(paramSource, res, next){
+	var u = decodeURIComponent(paramSource.u)
+		, w = paramSource.w
+		, h = paramSource.h
+		, x = paramSource.x
+		, y = paramSource.y
+		;
+	if (!u || !w || !h || !x || !y) res.send(400, {error: crop_message});
+
+	var img = new Img(static_host + u,img_path).load(function(err,im) {
+		if (err) res.status(500).send({ error: err })
+		else {
+			if (app.get("debug")) {
+				console.log("\nCrop image:");
+				console.log(im);
+			}
+			res.writeHead(200, {"Content-Type": "image/" + im.extension});
+			gm(im.destHashed)
+				.crop(w, h, x, y)
+				.stream(function streamOut (err, stdout, stderr) {
+					if (err) res.status(500).send({ error: err })
+					stdout.pipe(res);
+					stdout.on('error', next);
+				});
+		}
+	});
+};
 
 /**
  * Express routes.
@@ -81,59 +109,11 @@ app.get('/resize_crop', function(req, res, next){
 });
 
 app.get('/crop/:w/:h/:x/:y/:u', function(req, res, next){
-	var u =  decodeURIComponent(req.params.u) // URL
-		, w =  req.params.w // width
-		, h =  req.params.h // height
-		, x =  req.params.x // x-offset
-		, y =  req.params.y // y-offset
-		;
-	if (!u || !w || !h || !x || !y) res.send(400, {error: crop_message});
-
-	var img = new Img(static_host + u,img_path).load(function(err,im) {
-		if (err) res.status(500).send({ error: err })
-		else {
-			if (app.get("debug")) {
-				console.log("\nCrop image:");
-				console.log(im);
-			}
-			res.writeHead(200, {"Content-Type": "image/" + im.extension});
-			gm(im.destHashed)
-				.crop(w, h, x, y)
-				.stream(function streamOut (err, stdout, stderr) {
-					if (err) res.status(500).send({ error: err })
-					stdout.pipe(res);
-					stdout.on('error', next);
-				});
-		}
-	});
+	cropImage(req.params, res, next);
 });
 
 app.get('/crop', function(req, res, next){
-	var u = req.query.u // URL
-		, w = req.query.w // width
-		, h = req.query.h // height
-		, x = req.query.x // x-offset
-		, y = req.query.y // y-offset
-		;
-	if (!u || !w || !h || !x || !y) res.send(400, {error: crop_message});
-
-	var img = new Img(static_host + u,img_path).load(function(err,im) {
-		if (err) res.status(500).send({ error: err })
-		else {
-			if (app.get("debug")) {
-				console.log("\nCrop image:");
-				console.log(im);
-			}
-			res.writeHead(200, {"Content-Type": "image/" + im.extension});
-			gm(im.destHashed)
-		    .crop(w, h, x, y)
-		    .stream(function streamOut (err, stdout, stderr) {
-					if (err) res.status(500).send({ error: err })
-		      stdout.pipe(res);
-		      stdout.on('error', next);
-		    });
-		}
-	});
+	cropImage(req.query, res, next);
 });
 
 /**
