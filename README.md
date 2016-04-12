@@ -8,9 +8,14 @@ A HTTP wrapper over image magic that offers crop, resize and crop_resize functio
 + `u=panoptes-uploads.zooniverse.org/production/subject_location/90a3b642-55e2-4583-a4fb-2f0abeb5b285.jpeg`
 
 ## /crop route
-Crop route dimensions are in pixels. Params are: w x h dimensions at the x, y offset.
+Crop route can be specified in two formats and all dimensions are in pixels.
 
-+ http://localhost:3000/crop?w=150&h=150&x=300&y=175&u=panoptes-uploads.zooniverse.org/production/subject_location/90a3b642-55e2-4583-a4fb-2f0abeb5b285.jpeg
+1. Params are: w x h dimensions at the x, y offset.
+
+  + http://localhost:3000/crop?w=150&h=150&x=300&y=175&u=panoptes-uploads.zooniverse.org/production/subject_location/90a3b642-55e2-4583-a4fb-2f0abeb5b285.jpeg
+
+1. Params are part of the url path: /w/h/x/y/u, note the path to the image (u) should be url encoded, e.g.
+  + http://localhost:3000/crop/150/150/300/175/panoptes-uploads.zooniverse.org%2Fproduction%2Fsubject_location%2F90a3b642-55e2-4583-a4fb-2f0abeb5b285.jpeg
 
 ## /resize route
 Resize the image, dimensions are in pixels and can be overwritten by o url. See http://www.graphicsmagick.org/GraphicsMagick.html#details-resize.
