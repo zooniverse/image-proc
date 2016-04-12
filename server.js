@@ -35,7 +35,7 @@ var static_host = app.settings.static_server;
 
 // function cropImage(u, w, h, x, y, res, next){
 function cropImage(paramSource, res, next){
-	var u = decodeURIComponent(paramSource.u)
+	var u = paramSource.u
 		, w = paramSource.w
 		, h = paramSource.h
 		, x = paramSource.x
@@ -108,7 +108,8 @@ app.get('/resize_crop', function(req, res, next){
 	});
 });
 
-app.get('/crop/:w/:h/:x/:y/:u', function(req, res, next){
+app.get('/crop/:w/:h/:x/:y', function(req, res, next){
+	req.params.u = req.query.u
 	cropImage(req.params, res, next);
 });
 
