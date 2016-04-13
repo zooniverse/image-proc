@@ -50,14 +50,22 @@ function cropImage(paramSource, res, next){
 				console.log("\nCrop image:");
 				console.log(im);
 			}
-			res.writeHead(200, {"Content-Type": "image/" + im.extension});
-			gm(im.destHashed)
-				.crop(w, h, x, y)
-				.stream(function streamOut (err, stdout, stderr) {
-					if (err) res.status(500).send({ error: err })
-					stdout.pipe(res);
-					stdout.on('error', next);
-				});
+			var outFile = im.cropHashFilename(w,h,x,y);
+			fs.stat(outFile, function(err, stat) {
+		    if (!err) {
+					res.sendFile(outFile);
+		    }else {
+					gm(im.destHashed)
+					.crop(w, h, x, y)
+					.write(outFile, function (err) {
+					  if (err) {
+							next(new Error(err));
+						} else {
+							res.sendFile(outFile);
+						};
+					});
+		    }
+			});
 		}
 	});
 };
