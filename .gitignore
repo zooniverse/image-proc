@@ -4,3 +4,4 @@ montages
 temp.js
 npm-debug.log
 bin/
+log/*
