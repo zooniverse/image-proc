@@ -6,6 +6,8 @@ RUN apt-get update && \
 
 WORKDIR /node_app
 
+COPY im_config/policy.xml /etc/ImageMagick-6/policy.xml
+
 COPY docker/supervisor.conf /etc/supervisor/conf.d/static_crop.conf
 COPY docker/static_crop_cron /etc/cron.d/static_crop_cron
 COPY . /node_app
