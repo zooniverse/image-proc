@@ -43,7 +43,7 @@ function cropImage(paramSource, res, next){
     ;
   if (!u || !w || !h || !x || !y) res.send(400, {error: crop_message});
 
-  var img = new Img(static_host + u,img_path).load(function(err,im) {
+  var img = new Img(computeURL(static_host, u),img_path).load(function(err,im) {
     if (err) res.status(500).send({ error: err })
     else {
       if (app.get("debug")) {
@@ -70,6 +70,17 @@ function cropImage(paramSource, res, next){
   });
 };
 
+function computeURL(static_host, u){
+  var allowed = ['s3.amazonaws.com'];
+  var host = u.split('/', 1)[0];
+
+  if (allowed.indexOf(host) > -1) {
+    return 'http://' + u;
+  } else {
+    return static_host + u;
+  }
+};
+
 /**
  * Express routes.
  */
@@ -81,7 +92,7 @@ app.get('/resize', function(req, res, next){
     ;
   if (!u || !w || !h) res.send(400, {error: resize_message});
 
-  var img = new Img(static_host + u,img_path).load(function(err,im) {
+  var img = new Img(computeURL(static_host, u),img_path).load(function(err,im) {
     if (err) res.status(500).send({ error: err })
     else {
       gm(im.destHashed)
@@ -102,7 +113,7 @@ app.get('/resize_crop', function(req, res, next){
     ;
   if (!u || !w || !h) res.send(400, {error: resize_message});
 
-  var img = new Img(static_host + u,img_path).load(function(err,im) {
+  var img = new Img(computeURL(static_host, u),img_path).load(function(err,im) {
     if (err) res.status(500).send({ error: err })
     else {
       im.resize(w,h,function(err,im) {
@@ -137,7 +148,7 @@ app.get('/montage', function(req, res, next){
 
   // Load all source images
   async.map(req.query.u, function (u, done) {
-    new Img(static_host + u,img_path).load(done);
+    new Img(computeURL(static_host, u),img_path).load(done);
   }, function (err, images) {
     if (err) next(new Error(err));
     var montage = new Montage(images, req.query.w, req.query.mw);
