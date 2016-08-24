@@ -25,7 +25,7 @@ var crop_message = 'Specify an url \'u\', width \'w\', height \'h\', x-offset \'
  */
 var app = express()
   .use(morgan('dev'))
-  .set('static_server', process.env.NODE_STATIC_SERVER || "http://zooniverse-static.s3-website-us-east-1.amazonaws.com/")
+  .set('static_server', process.env.NODE_STATIC_SERVER || "https://zooniverse-static.s3-website-us-east-1.amazonaws.com/")
   .set('port', process.env.NODE_PORT || 8080)
   .set('env', process.env.NODE_ENV || "development")
   .set('debug', process.env.NODE_DEBUG || false);
