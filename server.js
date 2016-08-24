@@ -70,12 +70,21 @@ function cropImage(paramSource, res, next){
   });
 };
 
-function computeURL(static_host, u){
-  var allowed = ['s3.amazonaws.com'];
-  var host = u.split('/', 1)[0];
+function escapeRegExp(string){
+  return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+};
 
-  if (allowed.indexOf(host) > -1) {
-    return 'http://' + u;
+function validUrl(arr, url) {
+  return arr.some(function(arrVal) {
+    var host_regex = new RegExp(escapeRegExp(arrVal), 'g');
+    return url.match(host_regex);
+  });
+}
+
+function computeURL(static_host, u){
+  var whitelists = ['s3.amazonaws.com/astronomy-rewind'];
+  if (validUrl(whitelists, u)) {
+    return 'https://' + u;
   } else {
     return static_host + u;
   }
