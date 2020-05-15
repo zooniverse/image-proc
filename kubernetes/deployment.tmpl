@@ -17,6 +17,13 @@ spec:
       containers:
         - name: image-proc-app
           image: zooniverse/image-proc:__IMAGE_TAG__
+          resources:
+               requests:
+                 memory: "150Mi"
+                 cpu: "10m"
+               limits:
+                 memory: "150Mi"
+                 cpu: "500m"
           ports:
             - containerPort: 80
 ---
