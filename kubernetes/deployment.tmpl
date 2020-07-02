@@ -26,6 +26,15 @@ spec:
                  cpu: "500m"
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: image-scratch-space
+              mountPath: "/node_app/img"
+      volumes:
+        - name: image-scratch-space
+          hostPath:
+            # directory location on host node temp disk
+            path: /mnt/image-proc-app-scratch-space
+            type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: Service
