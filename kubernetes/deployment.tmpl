@@ -5,7 +5,6 @@ metadata:
   labels:
     app: image-proc
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app: image-proc
@@ -20,7 +19,7 @@ spec:
           resources:
                requests:
                  memory: "150Mi"
-                 cpu: "10m"
+                 cpu: "250m"
                limits:
                  memory: "150Mi"
                  cpu: "500m"
@@ -48,3 +47,16 @@ spec:
       port: 80
       targetPort: 80
   type: NodePort
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: image-proc
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: image-proc
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
