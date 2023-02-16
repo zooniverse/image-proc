@@ -25,7 +25,7 @@ var crop_message = 'Specify an url \'u\', width \'w\', height \'h\', x-offset \'
  */
 var app = express()
   .use(morgan('dev'))
-  .set('static_server', process.env.NODE_STATIC_SERVER || "https://zooniverse-static.s3-website-us-east-1.amazonaws.com/")
+  .set('static_server', process.env.NODE_STATIC_SERVER || "https://zooniversestatic.z13.web.core.windows.net/")
   .set('port', process.env.NODE_PORT || 80)
   .set('env', process.env.NODE_ENV || "development")
   .set('debug', process.env.NODE_DEBUG || false);
@@ -43,7 +43,8 @@ function cropImage(paramSource, res, next){
     ;
   if (!u || !w || !h || !x || !y) res.send(400, {error: crop_message});
 
-  var img = new Img(computeURL(static_host, u),img_path).load(function(err,im) {
+  var url = computeURL(static_host, u);
+  var img = new Img(url,img_path).load(function(err,im) {
     if (err) res.status(500).send({ error: err })
     else {
       if (app.get("debug")) {
@@ -82,7 +83,10 @@ function validUrl(arr, url) {
 }
 
 function computeURL(static_host, u){
-  var whitelists = ['s3.amazonaws.com/astronomy-rewind'];
+  var whitelists = [
+    's3.amazonaws.com/astronomy-rewind',
+    'panoptes-uploads.zooniverse.org'
+  ];
   if (validUrl(whitelists, u)) {
     return 'https://' + u;
   } else {
