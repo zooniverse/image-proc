@@ -140,8 +140,7 @@ app.get('/resize_crop', function(req, res, next){
   });
 });
 
-app.get('/crop/:w/:h/:x/:y', function(req, res, next){
-  req.params.u = req.query.u
+app.get('/crop/:w/:h/:x/:y/:u ', function(req, res, next){
   cropImage(req.params, res, next);
 });
 
