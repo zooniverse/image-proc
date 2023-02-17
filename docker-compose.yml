@@ -1,7 +1,11 @@
-img_proc:
-  dockerfile: Dockerfile
-  build: ./
-  volumes:
-    - ./:/node_app
-  ports:
-    - "8080:8080"
+version: '3'
+services:
+  img_proc:
+    build:
+      context: ./
+    environment:
+      NODE_PORT: 8080
+    volumes:
+      - ./:/node_app
+    ports:
+      - "8080:8080"
