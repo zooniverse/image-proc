@@ -8,7 +8,7 @@
     "node": ">= v0.8.x"
   },
   "dependencies": {
-    "async": "^1.5.0",
+    "async": "^3.2.4",
     "express": "^4.13.3",
     "gm": "^1.21.1",
     "imagemagick": "^0.1.3",
